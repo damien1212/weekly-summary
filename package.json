@@ -1,0 +1,9 @@
+{
+  "name": "weekly-summary",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "moment": "2.18.1",
+    "xlsx": "0.10.5"
+  }
+}
