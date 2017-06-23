@@ -1,8 +1,97 @@
 Yearly:
   Quantities/costs per model for each plant + totals
 Quarterly:
-  Qty/cost per model for each part [group by plant?]
+  Qty/cost per model for each part
 Monthly:
   Q/c per model for each part + top5 parts show top3 defects
 Weekly:
   Q/c per model for each part + all parts show all defects
+
+
+Generate 3 reports:
+  Scrap quantity
+  Scrap cost
+  Rework quantity
+
+Cost is based on scrap cost only, so there is no cost for rework.
+
+
+Layout of JSON passed to Python:
+  [
+    {
+      "sheet": "(name of sheet)",
+      "title": "(title of report)",
+      "type": "yr|qt|mo|wk:qty|cost",
+      "data": {
+        ...
+      }
+    },
+    {
+      "sheet": "Yearly 2017",
+      "title": "Year 2017 Scrap Defects",
+      "type": "yr:qty",
+      "data": {
+        "A": {
+          "ADA": 1,
+          "AN": 2,
+          "JFA": 3,
+          "LFA": 4,
+          "UMA": 5
+        },
+        "B": { ... }
+      }
+    },
+    {
+      "sheet": "Q1 2017",
+      "title": "1st Quarter 2017 Scrap Cost",
+      "type": "qt:cost",
+      "data": {
+        "1067734": {
+          "ADA": 1,
+          "AN": 2,
+          "JFA": 3,
+          "LFA": 4,
+          "UMA": 5
+        },
+        "86698-C2700": { ... }
+      }
+    },
+    {
+      "sheet": "Jan 2017",
+      "title": "January 2017 Scrap Cost",
+      "type": "mo:cost",
+      "data": {
+        "86811-4Z500": {
+          "Flash": {
+            "ADA": 1,
+            "AN": 2,
+            "JFA": 3,
+            "LFA": 4,
+            "UMA": 5
+          },
+          "Broken": { ... }
+        },
+        "86150-F3000": {
+          ...(models only, bc not in top5)...
+        }
+      }
+    },
+    {
+      "sheet": "Jan Wk 1",
+      "title": "January 2017 Week 1 Rework Defects",
+      "type": "wk:qty",
+      "data": {
+        "29134-4Z000": {
+          "Assembly": {
+            "ADA": 1,
+            "AN": 2,
+            "JFA": 3,
+            "LFA": 4,
+            "UMA": 5
+          },
+          "Gas Mark": { ... }
+        },
+        "D108UMEAA01": { ... }
+      }
+    }
+  ]
