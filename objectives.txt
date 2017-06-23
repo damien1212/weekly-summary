@@ -1,0 +1,8 @@
+Yearly:
+  Quantities/costs per model for each plant + totals
+Quarterly:
+  Qty/cost per model for each part [group by plant?]
+Monthly:
+  Q/c per model for each part + top5 parts show top3 defects
+Weekly:
+  Q/c per model for each part + all parts show all defects
