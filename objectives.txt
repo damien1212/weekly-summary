@@ -17,19 +17,11 @@ Cost is based on scrap cost only, so there is no cost for rework.
 
 
 Layout of JSON passed to Python:
-  [
-    {
-      "sheet": "(name of sheet)",
-      "title": "(title of report)",
-      "type": "yr|qt|mo|wk:qty|cost",
-      "data": {
-        ...
-      }
-    },
-    {
+  {
+    "year": {
       "sheet": "Yearly 2017",
       "title": "Year 2017 Scrap Defects",
-      "type": "yr:qty",
+      "type": "qty",
       "data": {
         "A": {
           "ADA": 1,
@@ -39,59 +31,72 @@ Layout of JSON passed to Python:
           "UMA": 5
         },
         "B": { ... }
-      }
-    },
-    {
-      "sheet": "Q1 2017",
-      "title": "1st Quarter 2017 Scrap Cost",
-      "type": "qt:cost",
-      "data": {
-        "1067734": {
-          "ADA": 1,
-          "AN": 2,
-          "JFA": 3,
-          "LFA": 4,
-          "UMA": 5
-        },
-        "86698-C2700": { ... }
-      }
-    },
-    {
-      "sheet": "Jan 2017",
-      "title": "January 2017 Scrap Cost",
-      "type": "mo:cost",
-      "data": {
-        "86811-4Z500": {
-          "Flash": {
+      },
+      "quarters": [{
+        "sheet": "Q1 2017",
+        "title": "1st Quarter 2017 Scrap Cost",
+        "type": "cost",
+        "data": {
+          "1067734": {
             "ADA": 1,
             "AN": 2,
             "JFA": 3,
             "LFA": 4,
             "UMA": 5
           },
-          "Broken": { ... }
+          "86698-C2700": { ... }
         },
-        "86150-F3000": {
-          ...(models only, bc not in top5)...
-        }
-      }
-    },
-    {
-      "sheet": "Jan Wk 1",
-      "title": "January 2017 Week 1 Rework Defects",
-      "type": "wk:qty",
-      "data": {
-        "29134-4Z000": {
-          "Assembly": {
-            "ADA": 1,
-            "AN": 2,
-            "JFA": 3,
-            "LFA": 4,
-            "UMA": 5
+        "months": [{
+          "sheet": "Jan 2017",
+          "title": "January 2017 Scrap Cost",
+          "type": "cost",
+          "data": {
+            "86811-4Z500": {
+              "Flash": {
+                "ADA": 1,
+                "AN": 2,
+                "JFA": 3,
+                "LFA": 4,
+                "UMA": 5
+              },
+              "Broken": { ... }
+            },
+            "86150-F3000": {
+              ...(models only, bc not in top5)...
+            }
           },
-          "Gas Mark": { ... }
-        },
-        "D108UMEAA01": { ... }
-      }
+          "weeks": [{
+              "sheet": "Jan Wk 1",
+              "title": "January 2017 Week 1 Rework Defects",
+              "type": "qty",
+              "data": {
+                "29134-4Z000": {
+                  "Assembly": {
+                    "ADA": 1,
+                    "AN": 2,
+                    "JFA": 3,
+                    "LFA": 4,
+                    "UMA": 5
+                  },
+                  "Gas Mark": { ... }
+                },
+                "D108UMEAA01": { ... }
+              }
+          }, { ... }]
+        }, { ... }]
+      }, { ... }]
     }
-  ]
+  }
+
+To simplify the major bits:
+  {
+    years: {
+      quarters: [{
+        months: [{
+          weeks: [{
+            { ... }
+          }]
+        }]
+      }]
+    }
+  }
