@@ -22,17 +22,19 @@ class DefectList {
     return DefectList(defects);
   }
 
-  top(num, group, sum) {
+  top(num, group, sum, filter) {
     if (!group)
       group = 'partNum'
     if (!sum)
       sum = 'quantity';
 
-    let defects = this.defects.reduce((acc, val) => {
-      if (val[group] in acc) {
-        acc[val[group]] += val[sum];
-      } else {
-        acc[val[group]] = val[sum];
+    let defects = this.defects.reduce((acc, row) => {
+      if (filter(row)) {
+        if (row[group] in acc) {
+          acc[row[group]] += row[sum];
+        } else {
+          acc[row[group]] = row[sum];
+        }
       }
     }, {});
 
@@ -58,12 +60,12 @@ class DefectList {
 
 class Defect {
   constructor(part) {
-    this.tagNum       = part['Tag Num'];
-    this.rejectDate   = part['Reject Date'];
+    this.tagNum        = part['Tag Num'];
+    this.rejectDate    = part['Reject Date'];
     this.plant         = part['PL'];
     this.model         = part['MDL'];
-    this.partNum      = part['Part Num'];
-    this.partName     = part['Part Name'];
+    this.partNum       = part['Part Num'];
+    this.partName      = part['Part Name'];
     this.defect        = part['Defect'];
     this.quantity      = part['NG Qty'];
     this.Shift         = part['Shift'];
@@ -73,13 +75,13 @@ class Defect {
     this.found         = part['Found'];
     this.responsible   = part['Responsible for'];
     this.disposition   = part['Disposition'];
-    this.enteredBy    = part['Entered By'];
+    this.enteredBy     = part['Entered By'];
     this.Remark        = part['Remark'];
-    this.injNum       = part['Inj Num'];
+    this.injNum        = part['Inj Num'];
     this.d_date        = part['Dis Date'];
     this.d_quantity    = part['Dis Qty'];
     this.d_disposition = part['Disposal Contents'];
-    this.d_disposedBy = part['Disposed By'];
+    this.d_disposedBy  = part['Disposed By'];
     this.cost          = part['Cost'];
   }
 }
