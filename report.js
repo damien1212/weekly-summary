@@ -2,29 +2,29 @@ function summarize(data, group, sum, year, detail, filter) {
   if (!(detail === 'full' || detail === 'top5'))
     detail = 'none';
 
-  data = get_data_between(data, year.start, year.end);
+  data = getDataBetween(data, year.start, year.end);
 
-  let top_5 = [];
+  let top5 = [];
   if (detail === 'top5')
-    top_5 = get_top_5(data, group, sum, filter);
+    top5 = getTop5(data, group, sum, filter);
 
   return data.reduce((acc, value) => {
-    let group_val = value[group].toUpperCase();
+    let groupVal = value[group].toUpperCase();
     let model = value['MDL'];
-    if (group_val in acc) {
-      if (list_defects !== 0) {
-        acc[group_val] = summarize(data, 'Defect', sum, year);
-        list_defects--;
+    if (groupVal in acc) {
+      if (listDefects !== 0) {
+        acc[groupVal] = summarize(data, 'Defect', sum, year);
+        listDefects--;
       } else {
-        if (model in acc[group_val]) {
-          acc[group_val][model] += value[sum];
+        if (model in acc[groupVal]) {
+          acc[groupVal][model] += value[sum];
         } else {
-          acc[group_val][model] = value[sum];
+          acc[groupVal][model] = value[sum];
         }
       }
     } else {
-      acc[group_val] = {};
-      acc[group_val][model] = value[sum];
+      acc[groupVal] = {};
+      acc[groupVal][model] = value[sum];
     }
     return acc;
   }, {});

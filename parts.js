@@ -24,7 +24,7 @@ class DefectList {
 
   top(num, group, sum) {
     if (!group)
-      group = 'part_num'
+      group = 'partNum'
     if (!sum)
       sum = 'quantity';
 
@@ -45,7 +45,7 @@ class DefectList {
       return 0;
     });
 
-    return defects.slice(0, 5).map(i => i[0]);
+    return defects.slice(0, num).map(i => i[0]);
   }
 
   getDateRange(start, end) {
@@ -58,12 +58,12 @@ class DefectList {
 
 class Defect {
   constructor(part) {
-    this.tag_num       = part['Tag Num'];
-    this.reject_date   = part['Reject Date'];
+    this.tagNum       = part['Tag Num'];
+    this.rejectDate   = part['Reject Date'];
     this.plant         = part['PL'];
     this.model         = part['MDL'];
-    this.part_num      = part['Part Num'];
-    this.part_name     = part['Part Name'];
+    this.partNum      = part['Part Num'];
+    this.partName     = part['Part Name'];
     this.defect        = part['Defect'];
     this.quantity      = part['NG Qty'];
     this.Shift         = part['Shift'];
@@ -73,13 +73,13 @@ class Defect {
     this.found         = part['Found'];
     this.responsible   = part['Responsible for'];
     this.disposition   = part['Disposition'];
-    this.entered_by    = part['Entered By'];
+    this.enteredBy    = part['Entered By'];
     this.Remark        = part['Remark'];
-    this.inj_num       = part['Inj Num'];
+    this.injNum       = part['Inj Num'];
     this.d_date        = part['Dis Date'];
     this.d_quantity    = part['Dis Qty'];
     this.d_disposition = part['Disposal Contents'];
-    this.d_disposed_by = part['Disposed By'];
+    this.d_disposedBy = part['Disposed By'];
     this.cost          = part['Cost'];
   }
 }
