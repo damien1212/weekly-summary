@@ -3,7 +3,7 @@ const child_process = require('child_process');
 const moment = require('moment');
 const xlsx = require('xlsx');
 
-const { DefectList, Defect } = require('./parts.js');
+const { DefectList, Defect } = require('./defects.js');
 const { Report, levelOfDetail } = require('./report.js');
 const { getDateRanges, output } = require('./util.js');
 
