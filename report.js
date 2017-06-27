@@ -8,7 +8,6 @@ levelOfDetail = {
 };
 
 lod = levelOfDetail;
-exports.levelOfDetail = levelOfDetail;
 
 
 class Report {
@@ -17,7 +16,7 @@ class Report {
       deferGeneration = false;
 
     this.dateRanges = getDateRanges(date);
-    this.data = deferGeneration ? {} : this.generateReport();
+    this.data = defects  //deferGeneration ? {} : this.generateReport();
   }
 
   generateReport() {}
@@ -30,35 +29,32 @@ class Report {
 
   summarizeWeek() {}
 
-  summarize(dateRange, detail) {}
-
-  function summarize(dateRange, detail, group, sum, filter) {
+  summarize(dateRange, detail, group, sum, filter) {
     if (!(detail === lod.MAX || detail === lod.MID))
       detail = lod.MIN;
 
-    let data = this.data.getDateRange(dateRange.start, dateRange.end);
+    let data = this.data.filterDate(dateRange.start, dateRange.end);
 
     let top = [];
     if (detail === lod.MID)
-      top = data.top(5, data, group, sum, filter);
+      top = data.top(5, group, sum, filter);
 
-    return data.reduce((acc,  row) => {
-      let groupVal =  row[group].toUpperCase();
-      let model =  row['MDL'];
-      if (groupVal in acc) {
-        if (model in acc[groupVal]) {
-          acc[groupVal][model] +=  row[sum];
-        } else {
-          acc[groupVal][model] =  row[sum];
-        }
-      } else {
-        acc[groupVal] = {};
-        acc[groupVal][model] =  row[sum];
+    let reducedData = data.reduce(group, sum, filter);  // Now we have sum per group
+
+    if (top) {
+      let topDatasReduced = {};
+
+      for (let item of top) {
+        topDatasReduced[item] = data.reduce('defect', sum, v => item === v.partNum);
       }
-      return acc;
-    }, {});
+
+      console.log(topDatasReduced);
+    }
   }
 }
 
 
-module.exports = {};
+module.exports = {
+  Report,
+  levelOfDetail
+};

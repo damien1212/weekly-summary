@@ -3,7 +3,7 @@ Yearly:
 Quarterly:
   Qty/cost per model for each part
 Monthly:
-  Q/c per model for each part + top5 parts show top3 defects
+  Q/c per model for each part + top5 parts show all defects
 Weekly:
   Q/c per model for each part + all parts show all defects
 

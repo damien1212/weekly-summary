@@ -1,3 +1,6 @@
+const moment = require('moment');
+
+
 function getDateRanges(date) {
   if (!date)
     date = moment();
@@ -48,6 +51,6 @@ function output(filename, data) {
 
 
 module.exports = {
-  getDateRanges: getDateRanges,
-  output: output
+  getDateRanges,
+  output
 };

@@ -1,6 +1,9 @@
+const moment = require('moment');
+
+
 class DefectList {
   constructor(defects) {
-    for (defect of defects) {
+    for (let defect of defects) {
       if (!(defect instanceof Defect)) {
         throw new Error('all defects must be instances of Defect')
       }
@@ -12,31 +15,23 @@ class DefectList {
   static fromRaw(data) {
     let defects = [];
 
-    for (row of data) {
+    for (let row of data) {
       row['Reject Date'] = moment(row['Reject Date'], 'MM/DD/YYYY');
       row['NG Qty'] = Number(row['NG Qty']);
       row['Cost'] = parseFloat(row['Cost'].replace(',', '').slice(1));
-      defects.push(Defect(row));
+      defects.push(new Defect(row));
     }
 
-    return DefectList(defects);
+    return new DefectList(defects);
   }
 
   top(num, group, sum, filter) {
     if (!group)
-      group = 'partNum'
+      group = 'partNum';
     if (!sum)
       sum = 'quantity';
 
-    let defects = this.defects.reduce((acc, row) => {
-      if (filter(row)) {
-        if (row[group] in acc) {
-          acc[row[group]] += row[sum];
-        } else {
-          acc[row[group]] = row[sum];
-        }
-      }
-    }, {});
+    let defects = this.reduce(group, sum);
 
     defects = Object.entries(defects);
     defects.sort((a, b) => {
@@ -50,10 +45,33 @@ class DefectList {
     return defects.slice(0, num).map(i => i[0]);
   }
 
-  getDateRange(start, end) {
-    return this.defects.filter(
-      part => part.reject_date.isBetween(start, end, '[]')
-    );
+  filter(func) {
+    return new DefectList(this.defects.filter(func));
+  }
+
+  filterDate(start, end) {
+    return this.filter(part => part.rejectDate.isBetween(start, end, '[]'));
+  }
+
+  reduce(group, sum, filter) {
+    if (typeof filter !== 'function')
+      filter = row => true;
+
+    if (group === 'defect') debugger;
+
+    return this.defects.reduce((acc,  row) => {
+      let groupVal =  row[group].toUpperCase();
+
+      if (filter(row)) {
+        if (groupVal in acc) {
+          acc[groupVal] += row[sum];
+        } else {
+          acc[groupVal] = row[sum];
+        }
+      }
+
+      return acc;
+    }, {}); 
   }
 }
 
@@ -88,6 +106,6 @@ class Defect {
 
 
 module.exports = {
-  DefectList: DefectList,
-  Defect: Defect
+  DefectList,
+  Defect
 };
