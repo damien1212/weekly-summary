@@ -35,7 +35,8 @@ let weekSummaries = ranges.weeks.map(
   v => summarize(defectData, 'Part Num', 'NG Qty', v, 'all')
 );*/
 
-report = new Report(defectData, moment());
-report.summarize(report.dateRanges.year, levelOfDetail.MID, 'partNum', 'quantity', v => v.disposition === 'SCRAP');
+let report = new Report(defectData, moment());
+let summary = report.summarize(report.dateRanges.year, levelOfDetail.MID, 'partNum', 'quantity', v => v.disposition === 'SCRAP');
+console.log(summary);
 
 //output('report.xlsx', [1, 2, 3]);

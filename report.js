@@ -11,23 +11,61 @@ lod = levelOfDetail;
 
 
 class Report {
-  constructor(defects, date, deferGeneration) {
+  constructor(defects, date, dispo, sum) {
     if (typeof deferGeneration === 'undefined')
       deferGeneration = false;
 
+    this.data = defects;
     this.dateRanges = getDateRanges(date);
-    this.data = defects  //deferGeneration ? {} : this.generateReport();
   }
 
-  generateReport() {}
+  generateReport() {
+    let year = this.dateRanges.year.start.year();
+    let dispo = this.dispo[0] + this.dispo.slice(1).toUpperCase();
+    let sum = this.sum === 'cost' ? 'Cost' : 'Defects';
 
-  summarizeYear() {}
+    let data = {
+      year: {
+        sheet: `Yearly ${year}`,
+        title: `Year ${year} ${dispo} ${sum}`,
+        type: this.sum,
+        data: {},
+        quarters: []
+      }
+    };
 
-  summarizeQuarter() {}
+    data.year.data = summarizeYear(this.dateRanges.year);
 
-  summarizeMonth() {}
+    for (let quarter of this.dateRangers.quarters) {
+      let qtrS = quarter.start.quarter();
+      let qtrL = quarter.start.format('Qo');
+      let qtrData = {
+        sheet: `Q${qtr} ${year}`,
+        title: `${qtrL} Quarter ${year} ${dispo} ${sum}`,
+        type: this.sum,
+        data: {},
+        months: []
+      };
 
-  summarizeWeek() {}
+      data.year.quarters.push(qtrData);
+    }
+  }
+
+  summarizeYear(year, sum) {
+    return summarize(year, lod.MIN, 'plant', sum);
+  }
+
+  summarizeQuarter(qtr, sum) {
+    return summarize(qtr, lod.MIN, 'partName', sum);
+  }
+
+  summarizeMonth(month, sum) {
+    return summarize(month, lod.MID, 'partName', sum);
+  }
+
+  summarizeWeek(week, sum) {
+    return summarize(week, lod.MAX, 'partName', sum);
+  }
 
   summarize(dateRange, detail, group, sum, filter) {
     if (!(detail === lod.MAX || detail === lod.MID))
@@ -41,15 +79,24 @@ class Report {
 
     let reducedData = data.reduce(group, sum, filter);  // Now we have sum per group
 
-    if (top) {
+    if (detail > lod.MIN) {
       let topDatasReduced = {};
+      let i = 0;
 
       for (let item of top) {
+        if (i > top.length)
+          break;
+
         topDatasReduced[item] = data.reduce('defect', sum, v => item === v.partNum);
+        i++;
       }
 
-      console.log(topDatasReduced);
+      for (let entry of Object.entries(topDatasReduced)) {
+        reducedData[entry[0]] = entry[1];
+      }
     }
+
+    return reducedData;
   }
 }
 

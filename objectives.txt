@@ -21,7 +21,7 @@ Layout of JSON passed to Python:
     "year": {
       "sheet": "Yearly 2017",
       "title": "Year 2017 Scrap Defects",
-      "type": "qty",
+      "type": "quantity",
       "data": {
         "A": {
           "ADA": 1,
@@ -68,7 +68,7 @@ Layout of JSON passed to Python:
           "weeks": [{
               "sheet": "Jan Wk 1",
               "title": "January 2017 Week 1 Rework Defects",
-              "type": "qty",
+              "type": "quantity",
               "data": {
                 "29134-4Z000": {
                   "Assembly": {
