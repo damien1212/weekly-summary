@@ -31,7 +31,7 @@ class DefectList {
     if (!sum)
       sum = 'quantity';
 
-    let defects = this.reduce(group, sum);
+    let defects = this.reduce(group, sum, filter);
 
     defects = Object.entries(defects);
     defects.sort((a, b) => {
@@ -42,7 +42,10 @@ class DefectList {
       return 0;
     });
 
-    return defects.slice(0, num).map(i => i[0]);
+    if (typeof num === 'number')
+      return defects.slice(0, num).map(i => i[0]);
+    else
+      return defects.map(i => i[0]);
   }
 
   filter(func) {
@@ -50,14 +53,14 @@ class DefectList {
   }
 
   filterDate(start, end) {
-    return this.filter(part => part.rejectDate.isBetween(start, end, '[]'));
+    return this.filter(part => part.rejectDate.isBetween(start, end, null, '[]'));
   }
 
   reduce(group, sum, filter) {
     if (typeof filter !== 'function')
       filter = row => true;
 
-    if (group === 'defect') debugger;
+    debugger;
 
     return this.defects.reduce((acc,  row) => {
       let groupVal =  row[group].toUpperCase();

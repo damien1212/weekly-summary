@@ -1,7 +1,7 @@
 import sys, json
 
 from openpyxl import Workbook
-from openpyxl.styles import Border, Side, PatternFill, Font, GradientFill, Alignment
+from openpyxl.styles import Border, Side, PatternFill, Font, GradientFill, Alignment, Color
 
 
 def load_data():
@@ -38,10 +38,8 @@ def style_range(ws, cell_range, border=Border(), fill=None, font=None, alignment
                 c.fill = fill
 
 
-def main():
-    data = load_data()
-
-    print(data)
+def export_excel():
+    # data = load_data()
 
     wb = Workbook()
     ws = wb.active
@@ -51,15 +49,30 @@ def main():
 
     thin = Side(border_style="thin", color="000000")
 
+    dark_red = PatternFill("solid", fgColor=Color(theme=5, tint=0.4))
+    light_red = PatternFill("solid", fgColor=Color(theme=5, tint=0.6))
+    bold = Font(b=True, color="000000")
+    regular = Font(b=False, color="000000")
+
+
     styles = {
+        'fill': PatternFill("solid", fgColor=Color(theme=5, tint=0.4)),
         'border': Border(top=thin, left=thin, right=thin, bottom=thin),
-        'fill': PatternFill("solid", fgColor="FF0055"),
-        'font': Font(b=True, color="000000"),
-        'alignment': Alignment(horizontal="center", vertical="center")
+        'font': Font(b=True, color="000000")
     }
 
     style_range(ws, 'A1:C3', **styles)
 
-    wb.save(sys.argv[1])
+    wb.save(sys.argv[1] + '.xlsx')
 
-main()
+def export_json():
+    data = load_data()
+    with open(sys.argv[1] + '.json', 'w+') as f:
+        json.dump(data, f, indent=4)
+
+    # print March monthly JFA HTR DATC values 
+    print(data['year']['quarters'][0]['months'][2]['data']['1070054'])
+
+
+if __name__ == '__main__':
+    export_excel()

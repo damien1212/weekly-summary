@@ -1,5 +1,3 @@
-const child_process = require('child_process');
-
 const moment = require('moment');
 const xlsx = require('xlsx');
 
@@ -18,25 +16,11 @@ function get_defects(filename) {
  
 defectData = get_defects('Non-Conforming List.xlsx');
 
-/*top_scrap_parts_by_qty = get_top_5(defectData, 'Part Num', 'NG Qty', {field: 'Disposition', val: 'SCRAP'});
-top_scrap_parts_by_cost = get_top_5(defectData, 'Part Num', 'Cost', {field: 'Disposition', val: 'SCRAP'});
-top_rework_parts_by_qty = get_top_5(defectData, 'Part Num', 'NG Qty', {field: 'Disposition', val: 'REWORK'});
+let reportSQ = new Report(defectData, moment(), 'SCRAP', 'quantity');
+output('scrap_quantity', reportSQ.generateReport());
 
+let reportSC = new Report(defectData, moment(), 'SCRAP', 'cost');
+output('scrap_cost', reportSC.generateReport());
 
-let ranges = getDateRanges(moment().endOf('year'));
-let yearSummary = summarize(defectData, 'PL', 'NG Qty', ranges.year);
-let quarterSummaries = ranges.quarters.map(
-  v => summarize(defectData, 'Part Num', 'NG Qty', v)
-);
-let monthSummaries = ranges.months.map(
-  v => summarize(defectData, 'Part Num', 'NG Qty', v, 5)
-);
-let weekSummaries = ranges.weeks.map(
-  v => summarize(defectData, 'Part Num', 'NG Qty', v, 'all')
-);*/
-
-let report = new Report(defectData, moment());
-let summary = report.summarize(report.dateRanges.year, levelOfDetail.MID, 'partNum', 'quantity', v => v.disposition === 'SCRAP');
-console.log(summary);
-
-//output('report.xlsx', [1, 2, 3]);
+let reportRQ = new Report(defectData, moment(), 'REWORK', 'quantity');
+output('rework_quantity', reportRQ.generateReport());
